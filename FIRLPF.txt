@@ -1,0 +1,22 @@
+clc; clear all; close all;
+fp=2000 ; fs=4000;
+Fs=20000;
+fn=Fs/2;
+fc=(fs+fp)/2/fn;
+tw=abs(fs-fp)/Fs;
+N=ceil(4/tw);
+If(rem(N,2)==0)
+N=N+1;
+end
+wn=hanning(N);
+hd=fir1(N-1,fc,boxcar(N));
+hn=fir1(N-1,fc,wn);
+[H,f]=freqz(hn,1,512,Fs);
+mag=20*log10(abs(H));
+plot(f,mag);grid on;
+xlabel('Frequency(Hz)');
+ylabel('Magnitude response(dB)');
+title('Frequency response of LPF');
+n=0:N-1;
+figure;
+plot(n,hn);
